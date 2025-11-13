@@ -10,7 +10,6 @@ class EmpathApp {
         this.currentChallenge = null;
         this.pendingMood = null;
         this.pendingMoodReason = '';
-        this.vkDonationProjectId = 'VK_DOBRO_PROJECT_ID'; 
         this.vkDonationCampaignUrl = 'https://vk.com/dobro';
         this.vkScriptLoadingPromise = null;
         this.meditationTimeUpdateHandler = () => this.updateMeditationProgress();
@@ -1198,9 +1197,6 @@ class EmpathApp {
             return false;
         }
 
-        if (window.VK && window.VK.Widgets && window.VK.Widgets.Donation) {
-            return true;
-        }
 
         if (this.vkScriptLoadingPromise) {
             return this.vkScriptLoadingPromise;
@@ -1251,40 +1247,6 @@ class EmpathApp {
                 </div>
             `;
             return;
-        }
-
-        try {
-            const projectId = this.vkDonationProjectId;
-            if (!projectId || projectId === 'VK_DOBRO_PROJECT_ID') {
-                container.innerHTML = `
-                    <div class="body medium" style="text-align: center; padding: 24px;">
-                        Здесь появится виджет VK Добро, как только он будет подключён. Пока что можно перейти по кнопке ниже и сделать пожертвование напрямую.
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = '';
-
-            if (window.VK.Widgets.Donation) {
-                window.VK.Widgets.Donation('vk_donation_widget', {
-                    button_text: 'Помочь',
-                    wide: 1
-                }, projectId);
-            } else {
-                container.innerHTML = `
-                    <div class="body medium" style="text-align: center; padding: 24px;">
-                        Виджет VK Добро временно недоступен. Используй кнопку ниже, чтобы перейти на страницу пожертвования.
-                    </div>
-                `;
-            }
-        } catch (error) {
-            console.error('Ошибка инициализации виджета VK Добро:', error);
-            container.innerHTML = `
-                <div class="body medium" style="text-align: center; padding: 24px;">
-                    Не удалось отобразить виджет. Попробуй открыть пожертвование по ссылке ниже.
-                </div>
-            `;
         }
     }
 

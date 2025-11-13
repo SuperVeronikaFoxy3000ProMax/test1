@@ -948,9 +948,6 @@ class EmpathApp {
                     <div class="container">
                         <div class="headline" style="margin-bottom: 12px;">Пожертвование через VK Добро</div>
                         <div id="vk_donation_widget" class="vk-donation-widget" style="min-height: 380px;">
-                            <div class="body medium" style="text-align: center; padding: 24px;">
-                                Загружаем виджет VK Добро...
-                            </div>
                         </div>
                         <button class="btn primary" style="margin-top: 16px;" data-action="openVkDobro">
                             Открыть VK Добро
@@ -1230,25 +1227,6 @@ class EmpathApp {
         return this.vkScriptLoadingPromise;
     }
 
-    async initVKDonationWidget() {
-        const container = document.getElementById('vk_donation_widget');
-        if (!container) {
-            return;
-        }
-
-        container.innerHTML = `<div class="body medium" style="text-align: center; padding: 24px;">Загружаем виджет VK Добро...</div>`;
-
-        const widgetLoaded = await this.loadVKScript();
-
-        if (!widgetLoaded || !window.VK || !window.VK.Widgets) {
-            container.innerHTML = `
-                <div class="body medium" style="text-align: center; padding: 24px;">
-                    Не удалось загрузить виджет VK Добро. Попробуй открыть пожертвование по ссылке ниже.
-                </div>
-            `;
-            return;
-        }
-    }
 
     openVkDobro(url) {
         const targetUrl = typeof url === 'string' && url.startsWith('http')
